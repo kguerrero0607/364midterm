@@ -1,12 +1,8 @@
-
-
-{% block content1 %}
-
-<form action="{{ url_for('home') }}" method="POST">
-    {{ form.name.label() }}{{ form.name() }}<br>
-    {{ form.submit() }}
-    {{ form.hidden_tag() }}
-</form>
-
-
+{% block content %}
 {% endblock %}
+
+<p>------------</p>
+<h3>Navigation</h3>
+<ul>
+    <li><a href="{{ url_for('index')}}">Queen input form.</a></li>
+</ul>
