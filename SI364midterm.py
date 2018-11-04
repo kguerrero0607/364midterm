@@ -30,21 +30,27 @@ db = SQLAlchemy(app)
 ######## HELPER FXNS (If any) ########
 ######################################
 
+#get_or_create_queen
 
-
+# get_or_create_challenge
 
 ##################
 ##### MODELS #####
 ##################
 
-class Name(db.Model):
-    __tablename__ = "names"
-    id = db.Column(db.Integer,primary_key=True)
-    name = db.Column(db.String(64))
+class Queen(db.Model):
+    __tablename__ = 'queens'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=False) # autoincrement not needed - API provides unique ID for each queen
+    name = db.Column(db.String)
+    challenges = db.relationship('Challenge', backref='queen')
 
-    def __repr__(self):
-        return "{} (ID: {})".format(self.name, self.id)
-
+class Challenge(db.Model):
+    __tablename__ = 'challenges'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=False) # autoincrement not needed - API provides unique ID for each challenge
+    ep_title = db.Column(db.String)
+    description = db.Column(db.String)
+    prize = db.Column(db.String)
+    queen_id = db.Column(db.Integer, db.ForeignKey('queens.id'))
 
 
 ###################
