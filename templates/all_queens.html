@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+PAGE FOR ALL QUEENS
+
+<div>
+    {% for message in get_flashed_messages() %}
+    <strong>*** {{ message }} ***</strong>
+    {% endfor %}
+</div>
+
+{% endblock %}
