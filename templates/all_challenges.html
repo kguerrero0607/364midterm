@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<ul>
+    {% for c in all_challenges %}
+    <li><strong>{{ c[0] }}</strong> - {{ c[1] }}</li>
+    <ul>
+        <li> Prize: {{ c[2] }}</li>
+        <li>Winner: {{ c[3] }}</li>
+    </ul>
+    {% endfor %}
+</ul>
+
+{% if not all_challenges %}
+There are no saved challenges to show.
+{% endif %}
+
+{% endblock %}

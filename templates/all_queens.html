@@ -1,11 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
-PAGE FOR ALL QUEENS
 
 <div>
     {% for message in get_flashed_messages() %}
     <strong>*** {{ message }} ***</strong>
     {% endfor %}
 </div>
+
+<ul>
+    {% for q in queens %}
+    <li>{{ q }}</li><br>
+    {% endfor %}
+</ul>
+
+{% if not queens %}
+You haven't searched for any queens yet
+{% endif %}
 
 {% endblock %}

@@ -104,7 +104,7 @@ class Challenge(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=False) # autoincrement not needed - API provides unique ID for each challenge
     ep_title = db.Column(db.String)
     description = db.Column(db.String)
-    prize = db.Column(db.String)
+    prize = db.Column(db.String, default = 'None')
     queen_id = db.Column(db.Integer, db.ForeignKey('queens.id'))
     def __repr__(self):
         return 'ID: {}, Episode: {}, Desc: {}, Prize: {}, QueenId: {}'.format(id,ep_title,description,prize,queen_id)
@@ -162,7 +162,20 @@ def index():
 
 @app.route('/all_queens')
 def all_queens():
-    return render_template('all_queens.html')
+    queen_names = []
+    all_queens = Queen.query.all()
+    for x in all_queens:
+        queen_names.append(x.name)
+    queen_names = sorted(queen_names)
+
+    return render_template('all_queens.html', queens=queen_names)
+
+@app.route('/all_challenges')
+def all_challenges():
+    challenges = Challenge.query.all()
+    all_challenges = [(c.ep_title, c.description, c.prize, Queen.query.filter_by(id=c.queen_id).first().name) for c in challenges]
+
+    return render_template('all_challenges.html', all_challenges=all_challenges)
 
 @app.route('/names')
 def all_names():
