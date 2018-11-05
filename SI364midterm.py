@@ -197,11 +197,6 @@ def queen_info(name):
 
     return render_template('queen_info.html',queen=specific_queen,chal=challenges_won)
 
-@app.route('/names')
-def all_names():
-    names = Name.query.all()
-    return render_template('name_example.html',names=names)
-
 
 
 ## Code to run the application...
