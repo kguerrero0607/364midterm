@@ -18,7 +18,7 @@ app.debug = True
 
 ## All app.config values
 app.config['SECRET_KEY'] = 'supersecretstring'
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://localhost/364Midterm"
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:ROCKCITY123@localhost/364Midterm"
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -136,9 +136,13 @@ class QueenForm(FlaskForm):
 ###### VIEW FXNS ######
 #######################
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
 @app.route('/', methods=['GET','POST'])
 def index():
-    form = QueenForm() # User should be able to enter name after name and each one will be saved, even if it's a duplicate! Sends data with GET
+    form = QueenForm()
     name = ''
 
     if form.validate_on_submit():
@@ -176,6 +180,22 @@ def all_challenges():
     all_challenges = [(c.ep_title, c.description, c.prize, Queen.query.filter_by(id=c.queen_id).first().name) for c in challenges]
 
     return render_template('all_challenges.html', all_challenges=all_challenges)
+
+@app.route('/<name>')
+def queen_info(name):
+    name = name.replace('%20', ' ')
+    specific_queen = Queen.query.filter_by(name=name).first()
+
+    if not specific_queen:
+        flash("That queen wasn't found. Try searching her name!")
+        return redirect(url_for('index'))
+
+    challenges = Challenge.query.filter_by(queen_id=specific_queen.id).all()
+    challenges_won = [(c.ep_title, c.description) for c in challenges]
+
+
+
+    return render_template('queen_info.html',queen=specific_queen,chal=challenges_won)
 
 @app.route('/names')
 def all_names():

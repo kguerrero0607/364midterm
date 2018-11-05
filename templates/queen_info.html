@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>{{ queen.name }}</h1>
+
+{% if not chal %}
+This queen won no main challenges.
+{% else %}
+Main challenges won...
+{% endif %}
+
+<ul>
+    {% for c in chal %}
+    <li><i>{{ c[0] }}</i> - {{ c[1] }}</li>
+    {% endfor %}
+</ul>
+
+
+<div>
+    {% for message in get_flashed_messages() %}
+    <strong>{{ message }}</strong>
+    {% endfor %}
+</div>
+
+{% endblock %}
